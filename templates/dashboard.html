@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — PoddeadProfits{% endblock %}
+{% block content %}
+<div style="margin-bottom:1.5rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;">
+  <h2 style="font-size:1.4rem; font-weight:700;">{{ character_name }}'s Kill Profits</h2>
+  <a href="/api/kills" style="font-size:0.8rem; color:var(--muted);">JSON API ↗</a>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="value">{{ stats.total_kills }}</div>
+    <div class="label">Total Kills</div>
+  </div>
+  <div class="stat-card">
+    <div class="value" style="color:var(--accent2);">{{ stats.total_isk_destroyed_formatted }}</div>
+    <div class="label">ISK Destroyed</div>
+  </div>
+  <div class="stat-card">
+    <div class="value" style="color:var(--green);">{{ stats.solo_kills }}</div>
+    <div class="label">Solo Kills</div>
+  </div>
+  <div class="stat-card">
+    <div class="value">{{ stats.pvp_kills }}</div>
+    <div class="label">PvP Kills</div>
+  </div>
+  <div class="stat-card">
+    <div class="value" style="color:var(--muted);">{{ stats.npc_kills }}</div>
+    <div class="label">NPC Kills</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3 style="font-size:1rem; margin-bottom:1rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em;">Recent Kills (up to 25)</h3>
+  {% if kills %}
+  <table>
+    <thead>
+      <tr>
+        <th>Killmail ID</th>
+        <th>Time</th>
+        <th>System</th>
+        <th>Ship Type ID</th>
+        <th>ISK Destroyed</th>
+        <th>Points</th>
+        <th>Flags</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for k in kills %}
+      <tr>
+        <td>
+          <a href="https://zkillboard.com/kill/{{ k.killmail_id }}/" target="_blank">{{ k.killmail_id }}</a>
+        </td>
+        <td style="color:var(--muted); font-size:0.8rem;">{{ k.killmail_time[:10] if k.killmail_time else '—' }}</td>
+        <td style="color:var(--muted);">{{ k.solar_system_id or '—' }}</td>
+        <td>{{ k.ship_type_id or '—' }}</td>
+        <td style="color:var(--accent2); font-weight:600;">
+          {% if k.total_value >= 1000000000 %}
+            {{ "%.2f"|format(k.total_value / 1000000000) }}B
+          {% elif k.total_value >= 1000000 %}
+            {{ "%.2f"|format(k.total_value / 1000000) }}M
+          {% elif k.total_value >= 1000 %}
+            {{ "%.1f"|format(k.total_value / 1000) }}K
+          {% else %}
+            {{ k.total_value|int }}
+          {% endif %}
+        </td>
+        <td>{{ k.points }}</td>
+        <td>
+          {% if k.is_solo %}<span class="badge badge-solo">Solo</span>{% endif %}
+          {% if k.is_npc %}<span class="badge badge-npc">NPC</span>{% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p style="color:var(--muted); text-align:center; padding:2rem;">No kills found for this character on zKillboard.</p>
+  {% endif %}
+</div>
+{% endblock %}

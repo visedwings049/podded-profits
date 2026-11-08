@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Error — PoddeadProfits{% endblock %}
+{% block content %}
+<div style="text-align:center; padding:5rem 1rem;">
+  <h2 style="color:var(--red); margin-bottom:1rem;">Something went wrong</h2>
+  <p style="color:var(--muted);">{{ message }}</p>
+  <a href="/" class="btn btn-primary" style="margin-top:2rem; display:inline-block;">Go Home</a>
+</div>
+{% endblock %}

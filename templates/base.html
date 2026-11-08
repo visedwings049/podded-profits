@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}PoddeadProfits{% endblock %}</title>
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --surface: #111520;
+      --border: #1e2a3a;
+      --accent: #4fa3e0;
+      --accent2: #e06c4f;
+      --text: #c8d6e5;
+      --muted: #5a7899;
+      --green: #4ecb71;
+      --red: #e05454;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    .nav-brand { font-size: 1.2rem; font-weight: 700; color: var(--accent); letter-spacing: 0.05em; }
+    .nav-brand span { color: var(--accent2); }
+    .nav-links { display: flex; gap: 1.5rem; margin-left: auto; align-items: center; }
+    .nav-links a { color: var(--muted); font-size: 0.9rem; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .btn {
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary { background: var(--accent); color: #000; }
+    .btn-primary:hover { background: #6cb8f0; text-decoration: none; color: #000; }
+    .btn-danger { background: var(--red); color: #fff; }
+
+    main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .stat-card .value { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+    .stat-card .label { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    thead th { text-align: left; padding: 0.6rem 0.75rem; color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--border); }
+    tbody td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border); }
+    tbody tr:hover { background: rgba(79,163,224,0.04); }
+    .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 3px; font-size: 0.72rem; font-weight: 600; }
+    .badge-solo { background: rgba(78,203,113,0.15); color: var(--green); }
+    .badge-npc  { background: rgba(90,120,153,0.15); color: var(--muted); }
+  </style>
+</head>
+<body>
+  <nav>
+    <span class="nav-brand">Podded<span>Profits</span></span>
+    <div class="nav-links">
+      {% if session.get('character_name') %}
+        <span style="color:var(--text)">{{ session.character_name }}</span>
+        <a href="/logout" class="btn btn-danger">Logout</a>
+      {% else %}
+        <a href="/login" class="btn btn-primary">Login with EVE</a>
+      {% endif %}
+    </div>
+  </nav>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
